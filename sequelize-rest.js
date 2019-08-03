@@ -47,30 +47,32 @@ app.listen(port, () => {
 //Create a new movie
 app.post("/movie", (req, res, next) => {
   Movie.create(req.body)
-    .then(title => res.json(title))
+    .then(movie => res.json(movie))
     .catch(next);
 });
 
 //Read all movies
-// app.get("/movie", (req, res, next) =>
-//   Movie.findAll()
-//     .then(movies => {
-//       return res.json({ movies: movies });
-//     })
-//     .catch(error => next(error))
-// );
-app.get("/movie", (req, res, next) => {
-  const limit = req.query.limit || 3;
-  const offset = req.query.offset || 0;
+app.get("/movie", (req, res, next) =>
+  Movie.findAll()
+    .then(movies => {
+      return res.json({ movies: movies });
+    })
+    .catch(error => next(error))
+);
+//******-------------Pagination (Didn't really work)---------------********
+// app.get("/movie", (req, res, next) => {
+//   const limit = req.query.limit || 3;
+//   const offset = req.query.offset || 0;
 
-  Movie.count()
-    .then(total =>
-      Event.findAll({ limit, offset }).then(movies => {
-        return res.json({ movies: movies });
-      })
-    )
-    .catch(error => next(error));
-});
+//   Movie.count()
+//     .then(total =>
+//       Event.findAll({ limit, offset }).then(movies => {
+//         return res.json({ movies: movies });
+//       })
+//     )
+//     .catch(error => next(error));
+// });
+//******-----------------------------------------------------------********
 
 //Read one movie information
 app.get("/movie/:id", (req, res, next) => {
